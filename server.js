@@ -39,4 +39,9 @@ app.get("/buy", async(req, res) => {
 
 });
 
+app.post('/not', async(req, res) => {
+    console.log(req.body);
+    res.send("OK");
+});
+
 app.listen(process.env.PORT || 3002, () => console.log("Conectado"));
