@@ -1,6 +1,7 @@
 const express = require("express");
 const MercadoPago = require("mercadopago");
 const cors = require("cors");
+const { redirect } = require("statuses");
 const app = express();
 
 MercadoPago.configure({
@@ -53,7 +54,7 @@ app.post('/not', async(req, res) => {
             const pagamento = res.body.results[0];
 
             if(pagamento != undefined){
-                console.log(pagamento);
+                redirect(`https://testepago.herokuapp.com/t/${JSON.stringify(pagamento)}`);
             }
             else{
                 console.log("Pagamento não existe.");
@@ -62,6 +63,11 @@ app.post('/not', async(req, res) => {
     }, 20 * 1000);
 
     res.send("OK");
+});
+
+app.get("/t/:rest", async(req, res) => {
+    const { rest } = req.params;
+    return res.json(JSON.parse(rest));
 });
 
 app.listen(process.env.PORT || 3002, () => console.log("Conectado"));
