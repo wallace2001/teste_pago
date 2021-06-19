@@ -1,5 +1,6 @@
 const express = require("express");
 const MercadoPago = require("mercadopago");
+const cors = require("cors");
 const app = express();
 
 MercadoPago.configure({
@@ -8,6 +9,7 @@ MercadoPago.configure({
 });
 
 app.use(express.json());
+app.use(cors());
 
 app.get("/buy", async(req, res) => {
 
@@ -48,8 +50,14 @@ app.post('/not', async(req, res) => {
         }
 
         MercadoPago.payment.search({qs: filter}).then((res) => {
-            res.json(res);
-            console.log(res);
+            const pagamento = res.body.results[0];
+
+            if(pagamento != undefined){
+                console.log(pagamento);
+            }
+            else{
+                console.log("Pagamento não existe.");
+            }
         }).catch((error) => res.json({error}));
     }, 20 * 1000);
 
