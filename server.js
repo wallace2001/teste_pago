@@ -47,7 +47,10 @@ app.post('/not', async(req, res) => {
             "order.id": id
         }
 
-        MercadoPago.payment.search({qs: filter}).then((res) => res.send(res)).catch((error) => res.send({error}));
+        MercadoPago.payment.search({qs: filter}).then((res) => {
+            res.json(res);
+            console.log(res);
+        }).catch((error) => res.json({error}));
     }, 20 * 1000);
 
     res.send("OK");
